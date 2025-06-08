@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
-  get "kiosk/index"
+  root "kiosk#index"
   namespace :modules do
-    get "weather/index"
-    get "weather/current"
+    resources :weather, only: [:index, :show] do
+      collection do
+        get :current
+      end
+    end
   end
-  get "kiosk_configs/index"
-  get "kiosk_configs/create"
-  get "kiosk_configs/update"
+  resources :kiosk_configs, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
