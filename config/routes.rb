@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get "kiosk/index"
+  namespace :modules do
+    get "weather/index"
+    get "weather/current"
+  end
   get "kiosk_configs/index"
   get "kiosk_configs/create"
   get "kiosk_configs/update"
