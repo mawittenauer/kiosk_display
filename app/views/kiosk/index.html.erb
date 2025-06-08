@@ -1,2 +1,47 @@
-<h1>Kiosk#index</h1>
-<p>Find me in app/views/kiosk/index.html.erb</p>
+<div class="kiosk-header">
+  <h1>Information Display</h1>
+  <p id="current-time"></p>
+</div>
+
+<div class="kiosk-content">
+  <div class="module-grid">
+    <% @modules.each do |mod| %>
+      <div class="module" data-module="<%= mod[:name] %>">
+        <%= render partial: mod[:partial], locals: { data: mod[:data] } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  // Update time every second
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('current-time').textContent = 
+      now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+  }
+  
+  updateTime();
+  setInterval(updateTime, 1000);
+  
+  // Auto-refresh modules based on config
+  setInterval(() => {
+    fetch('/modules/weather/current')
+      .then(response => response.json())
+      .then(data => {
+        // Update weather module
+        updateWeatherModule(data);
+      })
+      .catch(console.error);
+  }, <%= kiosk_config.refresh_interval %>);
+  
+  function updateWeatherModule(data) {
+    const weatherModule = document.querySelector('[data-module="weather"]');
+    if (weatherModule) {
+      weatherModule.querySelector('.temperature').textContent = data.temperature + '°F';
+      weatherModule.querySelector('.description').textContent = data.description;
+      weatherModule.querySelector('.humidity').textContent = data.humidity + '%';
+      weatherModule.querySelector('.last-updated').textContent = 'Updated: ' + data.last_updated;
+    }
+  }
+</script>
