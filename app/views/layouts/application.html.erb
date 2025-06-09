@@ -1,22 +1,66 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Kiosk Display" %></title>
+    <title>Kiosk Display</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    
+    <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+    
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: 'Arial', sans-serif;
+        color: white;
+        overflow: hidden;
+        cursor: none; /* Hide cursor for kiosk mode */
+      }
+      
+      .kiosk-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .kiosk-header {
+        padding: 20px;
+        text-align: center;
+        background: rgba(0,0,0,0.3);
+      }
+      
+      .kiosk-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+      }
+      
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+      }
+      
+      .module {
+        background: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+    </style>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="kiosk-container">
+      <%= yield %>
+    </div>
   </body>
 </html>
