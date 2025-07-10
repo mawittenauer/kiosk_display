@@ -6,6 +6,11 @@ Rails.application.routes.draw do
         get :current
       end
     end
+    resources :network, only: [:index, :devices] do
+      collection do
+        get :devices
+      end
+    end
   end
   resources :kiosk_configs, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

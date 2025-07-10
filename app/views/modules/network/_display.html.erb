@@ -1,0 +1,25 @@
+<div class="network-module">
+  <h2>Network Devices</h2>
+  <div class="network-info">
+   <% data.map do |device| %>
+      <li>
+        <strong><%= device[:friendly_name] %></strong> - <%= device[:ip] %> (last seen: <%= device[:last_seen] %>)
+      </li>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .network-module h2 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+  }
+
+  .network-info li {
+    list-style: none;
+    margin: 10px 0;
+    font-size: .8em;
+  }
+</style>

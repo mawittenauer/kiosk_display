@@ -15,6 +15,14 @@ class KioskController < ApplicationController
         data: Modules::WeatherService.new(kiosk_config.zipcode).current_weather
       }
     end
+
+    if kiosk_config.modules_enabled.include?('network')
+      modules << {
+        name: 'network',
+        partial: 'modules/network/display',
+        data: Modules::NetworkService.new.devices
+      }
+    end
     
     modules
   end

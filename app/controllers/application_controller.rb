@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     @kiosk_config ||= KioskConfig.first_or_create(
       zipcode: '44514',
       refresh_interval: 300000, # 5 minutes in milliseconds
-      modules_enabled: ['weather']
+      modules_enabled: ['weather', 'network'] # Default enabled modules
     )
   end
   helper_method :kiosk_config
