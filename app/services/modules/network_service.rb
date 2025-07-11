@@ -29,7 +29,7 @@ class Modules::NetworkService
       {
         name: device['name'],
         friendly_name: device['friendly_name'] || 'Unknown Device',
-        ip: device['ip'],
+        ip_address: device['ip_address'],
         mac_address: device['mac_address'],
         last_seen: device['last_seen'] || 'N/A'
       }
