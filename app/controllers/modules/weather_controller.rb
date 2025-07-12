@@ -1,6 +1,9 @@
 class Modules::WeatherController < ApplicationController
   def index
-    render json: weather_service.current_weather
+    render json: { 
+      current_weather: weather_service.current_weather,
+      forecast: weather_service.extended_forecast
+    }
   end
   
   def current

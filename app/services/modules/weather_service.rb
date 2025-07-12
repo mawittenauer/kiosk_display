@@ -16,6 +16,15 @@ class Modules::WeatherService
     Rails.logger.error "Weather API Error: #{e.message}"
     default_weather_data
   end
+
+  def extended_forecast
+    Rails.cache.fetch("weather_forecast_#{@zipcode}", expires_in: 30.minutes) do
+      fetch_extended_weather_data
+    end
+  rescue => e
+    Rails.logger.error "Weather Forecast API Error: #{e.message}"
+    default_extended_weather_data
+  end
   
   private
   
@@ -33,6 +42,47 @@ class Modules::WeatherService
     else
       default_weather_data
     end
+  end
+
+  def fetch_extended_weather_data
+    Rails.cache.fetch("weather_forecast_#{@zipcode}", expires_in: 30.minutes) do
+      response = self.class.get("/forecast", {
+        query: {
+          zip: "#{@zipcode},US",
+          appid: @api_key,
+          units: 'imperial',
+          exclude: 'hourly,minutely,alerts'
+        }
+      })
+
+      if response.success?
+        parse_extended_weather_response(response.parsed_response)
+      else
+        default_extended_weather_data
+      end
+    end
+  rescue => e
+    Rails.logger.error "Weather Forecast API Error: #{e.message}"
+    default_extended_weather_data
+  end
+
+  def parse_extended_weather_response(data)
+    # Group by date, pick one forecast per day (e.g., noon)
+    forecasts = data['list'].group_by { |entry| entry['dt_txt'][0,10] }
+    forecasts.map do |date, entries|
+      max_entry = entries.max_by { |e| e['main']['temp_max'] }
+      {
+        date: date,
+        timezone: "US/New_York",
+        temperature: max_entry['main']['temp_max'].round,
+        description: max_entry['weather'].first['description'].titleize,
+        icon: max_entry['weather'].first['icon']
+      }
+    end
+  end
+
+  def default_extended_weather_data
+    []
   end
   
   def parse_weather_response(data)
