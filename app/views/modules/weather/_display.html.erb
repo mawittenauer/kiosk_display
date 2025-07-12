@@ -2,22 +2,34 @@
   <h2>Current Weather</h2>
   <div class="weather-info">
     <div class="temperature-display">
-      <span class="temperature"><%= data[:temperature] %>°F</span>
-      <span class="feels-like">Feels like <%= data[:feels_like] %>°F</span>
+      <span class="temperature"><%= data[:current_weather][:temperature] %>°F</span>
+      <span class="feels-like">Feels like <%= data[:current_weather][:feels_like] %>°F</span>
     </div>
     
     <div class="weather-details">
       <div class="weather-icon">
-        <img src="http://openweathermap.org/img/wn/<%= data[:icon] %>@2x.png" alt="Weather Icon">
+        <img src="http://openweathermap.org/img/wn/<%= data[:current_weather][:icon] %>@2x.png" alt="Weather Icon">
       </div>
-      <div class="description"><%= data[:description] %></div>
+      <div class="description"><%= data[:current_weather][:description] %></div>
     </div>
     
     <div class="additional-info">
-      <div class="humidity">Humidity: <span class="humidity"><%= data[:humidity] %>%</span></div>
-      <div class="location">📍 <%= data[:city] %></div>
-      <div class="last-updated">Updated: <%= data[:last_updated] %></div>
+      <div class="humidity">Humidity: <span class="humidity"><%= data[:current_weather][:humidity] %>%</span></div>
+      <div class="location">📍 <%= data[:current_weather][:city] %></div>
+      <div class="last-updated">Updated: <%= data[:current_weather][:last_updated] %></div>
     </div>
+  </div>
+
+  <h3 class="forecast-title">5-Day Forecast</h3>
+  <div class="forecast-row">
+    <% data[:forecast].first(5).each do |day| %>
+      <div class="forecast-col">
+        <div class="forecast-date"><%= Date.parse(day[:date]).strftime('%a') %></div>
+        <img src="http://openweathermap.org/img/wn/<%= day[:icon] %>@2x.png" alt="<%= day[:description] %>">
+        <div class="forecast-temp"><%= day[:temperature] %>°F</div>
+        <div class="forecast-desc"><%= day[:description] %></div>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -75,5 +87,54 @@
   .last-updated {
     opacity: 0.6;
     font-size: 0.9em !important;
+  }
+
+  .forecast-title {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    font-size: 1.3em;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .forecast-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0 10px 20px 10px;
+  }
+
+  .forecast-col {
+    border-radius: 8px;
+    padding: 10px 6px;
+    text-align: center;
+    flex: 1 1 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    min-width: 0;
+  }
+
+  .forecast-date {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 1.1em;
+  }
+
+  .forecast-col img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+  }
+
+  .forecast-temp {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .forecast-desc {
+    font-size: 0.95em;
+    opacity: 0.8;
+    text-transform: capitalize;
   }
 </style>

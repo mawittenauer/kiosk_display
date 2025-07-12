@@ -12,8 +12,10 @@ class KioskController < ApplicationController
       modules << {
         name: 'weather',
         partial: 'modules/weather/display',
-        data: Modules::WeatherService.new(kiosk_config.zipcode).current_weather
-      }
+        data: { 
+          current_weather: Modules::WeatherService.new(kiosk_config.zipcode).current_weather,
+          forecast: Modules::WeatherService.new(kiosk_config.zipcode).extended_forecast }
+        }
     end
 
     if kiosk_config.modules_enabled.include?('network')
