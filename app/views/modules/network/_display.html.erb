@@ -5,7 +5,8 @@
       <% data.each do |device| %>
         <li>
           <strong><%= device[:friendly_name][0..15] %>...</strong> - <%= device[:ip_address] %>
-          (<%= time_ago_in_words(device[:last_seen]) %>)
+          <br>
+          (last seen <%= time_ago_in_words(device[:last_seen]) %> ago)
         </li>
       <% end %>
     </ul>
