@@ -3,7 +3,7 @@
   <div class="network-info">
     <ul>
       <% data.each do |device| %>
-        <li>
+        <li class="<%= device[:friendly_name] == "Unknown Device" ? 'unknown-device' : '' %>">
           <strong><%= device[:friendly_name][0..15] %>...</strong> - <%= device[:ip_address] %>
           <br>
           (last seen <%= time_ago_in_words(device[:last_seen]) %> ago)
@@ -39,5 +39,10 @@
     padding: 4px 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     transition: background 0.2s;
+  }
+
+  .unknown-device {
+    background: #f44336 !important;
+    color: white;
   }
 </style>

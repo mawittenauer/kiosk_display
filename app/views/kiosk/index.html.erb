@@ -14,6 +14,12 @@
 </div>
 
 <script>
+  function getWeekdayUTC(dateString) {
+    const [year, month, day] = dateString.split('-');
+    const utcDate = new Date(Date.UTC(year, month - 1, day + 1));
+    return utcDate.toLocaleDateString(undefined, { weekday: 'short' });
+  }
+
   // Update time every second
   function updateTime() {
     const now = new Date();
@@ -33,6 +39,14 @@
         updateWeatherModule(data);
       })
       .catch(console.error);
+
+      fetch('/modules/weather/forecast')
+      .then(response => response.json())
+      .then(data => {
+        // Update weather forecast
+        updateWeatherForecast(data);
+      })
+      .catch(console.error);
   }, <%= kiosk_config.refresh_interval %>);
   
   function updateWeatherModule(data) {
@@ -40,8 +54,32 @@
     if (weatherModule) {
       weatherModule.querySelector('.temperature').textContent = data.temperature + '°F';
       weatherModule.querySelector('.description').textContent = data.description;
-      weatherModule.querySelector('.humidity').textContent = data.humidity + '%';
+      weatherModule.querySelector('.humidity').textContent = `Humidity: ${data.humidity + '%'}`;
       weatherModule.querySelector('.last-updated').textContent = 'Updated: ' + data.last_updated;
     }
   }
+
+  function updateWeatherForecast(forecast) {
+    const weatherModule = document.querySelector('[data-module="weather"]');
+    if (!weatherModule) return;
+
+    const forecastRow = weatherModule.querySelector('.forecast-row');
+    if (!forecastRow) return;
+
+    // Clear existing forecast columns
+    forecastRow.innerHTML = '';
+
+    // Only show up to 5 days
+    forecast.slice(0, 5).forEach(day => {
+      const col = document.createElement('div');
+      col.className = 'forecast-col';
+      col.innerHTML = `
+        <div class="forecast-date">${getWeekdayUTC(day.date)}</div>
+        <img src="http://openweathermap.org/img/wn/${day.icon}@2x.png" alt="${day.description}">
+        <div class="forecast-temp">${day.temperature}°F</div>
+        <div class="forecast-desc">${day.description}</div>
+      `;
+      forecastRow.appendChild(col);
+  });
+}
 </script>

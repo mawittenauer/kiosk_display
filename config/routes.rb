@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :weather, only: [:index, :show] do
       collection do
         get :current
+        get :forecast
       end
     end
     resources :network, only: [:index, :devices] do
