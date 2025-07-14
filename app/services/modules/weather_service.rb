@@ -18,7 +18,7 @@ class Modules::WeatherService
   end
 
   def extended_forecast
-    Rails.cache.fetch("weather_forecast_#{@zipcode}", expires_in: 30.minutes) do
+    Rails.cache.fetch("weather_forecast_#{@zipcode}", expires_in: 10.minutes) do
       fetch_extended_weather_data
     end
   rescue => e
@@ -44,22 +44,20 @@ class Modules::WeatherService
     end
   end
 
-  def fetch_extended_weather_data
-    Rails.cache.fetch("weather_forecast_#{@zipcode}", expires_in: 30.minutes) do
-      response = self.class.get("/forecast", {
-        query: {
-          zip: "#{@zipcode},US",
-          appid: @api_key,
-          units: 'imperial',
-          exclude: 'hourly,minutely,alerts'
-        }
-      })
+  def fetch_extended_weather_data      
+    response = self.class.get("/forecast", {
+      query: {
+        zip: "#{@zipcode},US",
+        appid: @api_key,
+        units: 'imperial',
+        exclude: 'hourly,minutely,alerts'
+      }
+    })
 
-      if response.success?
-        parse_extended_weather_response(response.parsed_response)
-      else
-        default_extended_weather_data
-      end
+    if response.success?
+      parse_extended_weather_response(response.parsed_response)
+    else
+      default_extended_weather_data
     end
   rescue => e
     Rails.logger.error "Weather Forecast API Error: #{e.message}"
