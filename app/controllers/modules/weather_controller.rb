@@ -9,6 +9,10 @@ class Modules::WeatherController < ApplicationController
   def current
     render json: weather_service.current_weather
   end
+
+  def forecast
+    render json: weather_service.extended_forecast
+  end
   
   private
   
