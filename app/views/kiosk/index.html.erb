@@ -16,8 +16,8 @@
 <script>
   function getWeekdayUTC(dateString) {
     const [year, month, day] = dateString.split('-');
-    const utcDate = new Date(Date.UTC(year, month - 1, day + 1));
-    return utcDate.toLocaleDateString(undefined, { weekday: 'short' });
+    const utcDate = new Date(Date.UTC(year, month - 1, day));
+    return utcDate.toLocaleDateString(undefined, { weekday: 'short', timeZone: 'UTC' });
   }
 
   // Update time every second
