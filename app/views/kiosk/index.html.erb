@@ -20,6 +20,27 @@
     return utcDate.toLocaleDateString(undefined, { weekday: 'short', timeZone: 'UTC' });
   }
 
+  function timeAgoInWords(date) {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    const intervals = [
+      { label: 'year', seconds: 31536000 },
+      { label: 'month', seconds: 2592000 },
+      { label: 'week', seconds: 604800 },
+      { label: 'day', seconds: 86400 },
+      { label: 'hour', seconds: 3600 },
+      { label: 'minute', seconds: 60 },
+      { label: 'second', seconds: 1 }
+    ];
+
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count > 0) {
+        return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+      }
+    }
+    return 'just now';
+  }
+
   // Update time every second
   function updateTime() {
     const now = new Date();
@@ -47,6 +68,14 @@
         updateWeatherForecast(data);
       })
       .catch(console.error);
+
+      fetch('/modules/network/devices')
+      .then(response => response.json())
+      .then(data => {
+        // Update network devices module
+        updateNetworkDevices(data);
+      })
+      .catch(console.error);
   }, <%= kiosk_config.refresh_interval %>);
   
   function updateWeatherModule(data) {
@@ -72,14 +101,35 @@
     // Only show up to 5 days
     forecast.slice(0, 5).forEach(day => {
       const col = document.createElement('div');
-      col.className = 'forecast-col';
-      col.innerHTML = `
-        <div class="forecast-date">${getWeekdayUTC(day.date)}</div>
-        <img src="http://openweathermap.org/img/wn/${day.icon}@2x.png" alt="${day.description}">
-        <div class="forecast-temp">${day.temperature}°F</div>
-        <div class="forecast-desc">${day.description}</div>
+        col.className = 'forecast-col';
+        col.innerHTML = `
+          <div class="forecast-date">${getWeekdayUTC(day.date)}</div>
+          <img src="http://openweathermap.org/img/wn/${day.icon}@2x.png" alt="${day.description}">
+          <div class="forecast-temp">${day.temperature}°F</div>
+          <div class="forecast-desc">${day.description}</div>
+        `;
+        forecastRow.appendChild(col);
+    });
+  }
+
+  function updateNetworkDevices(data) {
+    const networkModule = document.querySelector('[data-module="network"]');
+    if (!networkModule) return;
+
+    const networkInfo = networkModule.querySelector('.network-info ul');
+    if (!networkInfo) return;
+
+    // Clear existing devices
+    networkInfo.innerHTML = '';
+
+    data.forEach(device => {
+      const li = document.createElement('li');
+      li.className = device.friendly_name === "Unknown Device" ? 'unknown-device' : '';
+      li.innerHTML = `
+        <strong>${device.friendly_name.substring(0, 15)}...</strong> - ${device.ip_address}<br>
+        (last seen ${timeAgoInWords(device.last_seen)})
       `;
-      forecastRow.appendChild(col);
-  });
-}
+      networkInfo.appendChild(li);
+    });
+  }
 </script>
