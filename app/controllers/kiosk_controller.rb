@@ -7,8 +7,14 @@ class KioskController < ApplicationController
   
   def load_enabled_modules
     modules = []
+
+    enabled_modules = if params[:modules].present?
+      params[:modules].split(',').map(&:strip)
+    else
+      kiosk_config.modules_enabled
+    end
     
-    if kiosk_config.modules_enabled.include?('weather')
+    if enabled_modules.include?('weather')
       modules << {
         name: 'weather',
         partial: 'modules/weather/display',
@@ -18,7 +24,7 @@ class KioskController < ApplicationController
         }
     end
 
-    if kiosk_config.modules_enabled.include?('network')
+    if enabled_modules.include?('network')
       modules << {
         name: 'network',
         partial: 'modules/network/display',
