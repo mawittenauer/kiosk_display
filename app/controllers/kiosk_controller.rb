@@ -31,6 +31,14 @@ class KioskController < ApplicationController
         data: Modules::NetworkService.new.devices
       }
     end
+
+    if enabled_modules.include?('flights')
+      modules << {
+        name: 'flights',
+        partial: 'modules/flights/display',
+        data: {}
+      }
+    end
     
     modules
   end
