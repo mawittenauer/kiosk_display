@@ -17,6 +17,11 @@ Rails.application.routes.draw do
         get :flights
       end
     end
+    resources :news, only: [:index] do
+      collection do
+        get :top_news
+      end
+    end
   end
   resources :kiosk_configs, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

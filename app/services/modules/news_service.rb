@@ -49,7 +49,7 @@ class Modules::NewsService
         published_at: "2025-07-25T15:29:45.000000Z",
         source: "rt.com",
         categories:"",
-        relevance_score: null,
+        relevance_score: nil,
         locale: "us"
       },
       {
@@ -64,7 +64,7 @@ class Modules::NewsService
         published_at: "2025-07-25T15:26:16.000000Z",
         source: "nypost.com",
         categories: ["general"],
-        relevance_score: null,
+        relevance_score: nil,
         locale: "us"
       },
       {
@@ -79,7 +79,7 @@ class Modules::NewsService
         published_at: "2025-07-25T15:24:23.000000Z",
         source: "usmagazine.com",
         categories:["entertainment", "general"],
-        relevance_score: null,
+        relevance_score: nil,
         locale: "us"
       }
     ]
