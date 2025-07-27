@@ -39,6 +39,14 @@ class KioskController < ApplicationController
         data: {}
       }
     end
+
+    if enabled_modules.include?('news')
+      modules << {
+        name: 'news',
+        partial: 'modules/news/display',
+        data: Modules::NewsService.new.top_news
+      }
+    end
     
     modules
   end
