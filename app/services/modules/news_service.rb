@@ -10,7 +10,7 @@ class Modules::NewsService
 
   def top_news
     Rails.cache.fetch("top_news", expires_in: 10.minutes) do
-      default_news_data
+      fetch_top_news_data
     end
   rescue => e
     Rails.logger.error "News API Error: #{e.message}"
@@ -32,6 +32,20 @@ class Modules::NewsService
       parse_news_response(response.parsed_response)
     else
       default_news_data
+    end
+  end
+
+  def parse_news_response(response)
+    response['data'].map do |article|
+      {
+        uuid: article['uuid'],
+        title: article['title'],
+        description: article['description'],
+        keywords: article['keywords'],
+        snippet: article['snippet'],
+        url: article['url'],
+        image_url: article['image_url']
+      }
     end
   end
 
