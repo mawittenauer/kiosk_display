@@ -14,34 +14,36 @@ class Modules::SportsService
     end
   rescue => e
     Rails.logger.error "Sports API Error: #{e.message}"
-    default_schedule_data
+    []
   end
 
   private
 
   def fetch_schedule_data(team)
+    puts team
     response = self.class.get("/schedule/season/#{@season}.json", {
       query: {
         key: @api_key
       }
     })
+    puts response.inspect
 
     if response.success?
       parse_schedule_response(response.parsed_response, team)
     else
-      default_schedule_data
+      []
     end
   end
 
-  def sparse_schedule_response(data, team)
+  def parse_schedule_response(data, team)
     games = data['games'].select do |game| 
-      game['teams']['away'] == team || game['teams']['home'] == team
+      game['teams']['away']['name'] == team || game['teams']['home']['name'] == team
     end
     games.map do |game|
       {
-        week: game['week'],
-        home: game['teams']['home'],
-        away: game['teams']['away']
+        week: game['season']['week'],
+        home: game['teams']['home']['name'],
+        away: game['teams']['away']['name'],
       }
     end
   end

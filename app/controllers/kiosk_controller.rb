@@ -47,6 +47,14 @@ class KioskController < ApplicationController
         data: Modules::NewsService.new.top_news
       }
     end
+
+    if enabled_modules.include?('sports')
+      modules << {
+        name: 'sports',
+        partial: 'modules/sports/display',
+        data: Modules::SportsService.new('2025').schedule('Cleveland Browns')
+      }
+    end
     
     modules
   end
