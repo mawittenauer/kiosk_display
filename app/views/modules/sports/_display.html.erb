@@ -2,7 +2,15 @@
   <h2>Schedule</h2>
   <div class="sports-info">
     <div class="sports-schedule">
-      <%= data %>
+      <% data.each do |game| %>
+        <div class="game">
+          <h3 class="week">Week <%= game[:week] %></h3>
+          <div class="teams">
+            <span class="home-team"><%= game[:home] %></span> vs
+            <span class="away-team"><%= game[:away] %></span>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -17,5 +25,27 @@
 
   .sports-info {
     text-align: center;
+  }
+
+  .sports-schedule {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    column-gap: 30px;
+  }
+
+  .game {
+    break-inside: avoid;
+    background: #f9f9f9;
+    color: #666;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+  }
+
+  .game h3 {
+    margin: 0 0 5px;
+    color: #333;
   }
 </style>
