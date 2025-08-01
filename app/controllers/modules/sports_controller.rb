@@ -1,4 +1,4 @@
-class Module::SportsController < ApplicationController
+class Modules::SportsController < ApplicationController
   def index
     render json: {
       schedule: sports_service.schedule(params[:team] || 'Cleveland Browns')
