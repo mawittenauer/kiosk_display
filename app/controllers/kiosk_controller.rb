@@ -49,10 +49,11 @@ class KioskController < ApplicationController
     end
 
     if enabled_modules.include?('sports')
+      team_name = params[:team] || 'Cleveland Browns'
       modules << {
         name: 'sports',
         partial: 'modules/sports/display',
-        data: Modules::SportsService.new('2025').schedule('Cleveland Browns')
+        data: Modules::SportsService.new('2025').schedule(team_name)
       }
     end
     
