@@ -53,7 +53,7 @@ class KioskController < ApplicationController
       modules << {
         name: 'sports',
         partial: 'modules/sports/display',
-        data: Modules::SportsService.new('2025').schedule(team_name)
+        data: Modules::SportsService.new(params[:year] || '2025').schedule(team_name)
       }
     end
     

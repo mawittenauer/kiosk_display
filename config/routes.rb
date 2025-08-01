@@ -22,6 +22,11 @@ Rails.application.routes.draw do
         get :top_news
       end
     end
+    resources :sports, only: [:index] do
+      collection do
+        get :schedule
+      end
+    end
   end
   resources :kiosk_configs, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
