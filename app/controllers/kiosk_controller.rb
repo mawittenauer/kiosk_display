@@ -56,6 +56,14 @@ class KioskController < ApplicationController
         data: Modules::SportsService.new(params[:year] || '2025').schedule(team_name)
       }
     end
+
+    if enabled_modules.include?('finance')
+      modules << {
+        name: 'finance',
+        partial: 'modules/finance/display',
+        data: Modules::FinanceService.new.stock_price(params[:symbol] || 'AAPL')
+      }
+    end
     
     modules
   end
