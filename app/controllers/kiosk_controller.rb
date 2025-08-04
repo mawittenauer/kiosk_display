@@ -61,7 +61,7 @@ class KioskController < ApplicationController
       modules << {
         name: 'finance',
         partial: 'modules/finance/display',
-        data: Modules::FinanceService.new.stock_price(params[:symbol] || 'AAPL')
+        data: Modules::FinanceService.new.stock_prices(params[:symbols] || ['AAPL', 'GOOGL', 'MSFT'])
       }
     end
     
