@@ -25,7 +25,17 @@ class Modules::NetworkService
   end
 
   def parse_devices_response(data)
-    data.map do |device|
+    cutoff = 6.hours.ago
+    data.select do |device|
+      last_seen = device['last_seen']
+      ip = device['ip_address']
+      next false unless last_seen.present? && ip.present? && ip != '0.0.0.0'
+      begin
+        Time.parse(last_seen) >= cutoff
+      rescue ArgumentError
+        false
+      end
+    end.map do |device|
       {
         name: device['name'],
         friendly_name: device['friendly_name'] || 'Unknown Device',
