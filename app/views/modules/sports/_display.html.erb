@@ -1,10 +1,10 @@
 <div class="sports-module">
-  <h2>Schedule</h2>
+  <h2><%= params[:team] ? params[:team] : 'Cleveland Browns' %> Schedule</h2>
   <div class="sports-info">
     <div class="sports-schedule">
       <% data.each do |game| %>
         <div class="game">
-          <h3 class="week">Week <%= game[:week] %></h3>
+          <h3 class="week">Week <%= game[:week] %> <span>(<%= DateTime.parse(game[:date]).in_time_zone('Eastern Time (US & Canada)').strftime('%A, %b %d, %Y %I:%M %p %Z') %>)</span></h3>
           <div class="teams">
             <span class="home-team"><%= game[:home] %></span> vs
             <span class="away-team"><%= game[:away] %></span>
@@ -46,6 +46,11 @@
 
   .game h3 {
     margin: 0 0 5px;
+    color: #333;
+  }
+
+  .week span {
+    font-size: 0.8em;
     color: #333;
   }
 </style>
