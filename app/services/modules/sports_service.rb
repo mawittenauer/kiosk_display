@@ -35,6 +35,7 @@ class Modules::SportsService
 
   def parse_schedule_response(data, team)
     games = data['games'].select do |game| 
+      puts game.inspect
       game['teams']['away']['name'] == team || game['teams']['home']['name'] == team
     end
     games.map do |game|
@@ -42,16 +43,17 @@ class Modules::SportsService
         week: game['season']['week'],
         home: game['teams']['home']['name'],
         away: game['teams']['away']['name'],
+        date: game['date']
       }
     end
   end
 
   def default_schedule_data
     [
-      { week: 1, home: 'Cleveland Browns', away: 'Pittsburgh Steelers' },
-      { week: 2, home: 'Baltimore Ravens', away: 'Cleveland Browns' },
-      { week: 3, home: 'Cincinatti Bengals', away: 'Cleveland Browns' },
-      { week: 4, home: 'Pittsburgh Steelers', away: 'Cleveland Browns' }
+      { week: 1, home: 'Cleveland Browns', away: 'Pittsburgh Steelers', date: '2025-09-07T18:00:00Z' },
+      { week: 2, home: 'Baltimore Ravens', away: 'Cleveland Browns', date: '2025-09-14T18:00:00Z' },
+      { week: 3, home: 'Cincinatti Bengals', away: 'Cleveland Browns', date: '2025-09-21T18:00:00Z' },
+      { week: 4, home: 'Pittsburgh Steelers', away: 'Cleveland Browns', date: '2025-09-28T18:00:00Z' }
     ]
   end
 end
