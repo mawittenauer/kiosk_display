@@ -17,6 +17,29 @@ class Modules::SportsService
     default_schedule_data
   end
 
+  def buckeyes_schedule
+    { 
+      team: "Ohio State Buckeyes",
+      games:
+      [
+        { week: 1,  home: 'Ohio State Buckeyes', away: 'Texas Longhorns',        date: '2025-08-30T00:00:00Z' },
+        { week: 2,  home: 'Ohio State Buckeyes', away: 'Grambling State Tigers', date: '2025-09-06T00:00:00Z' },
+        { week: 3,  home: 'Ohio State Buckeyes', away: 'Ohio Bobcats',           date: '2025-09-13T00:00:00Z' },
+        { week: 4,  home: 'Bye',                 away: 'Bye',                      date: '2025-09-20' },
+        { week: 5,  home: 'Washington Huskies',   away: 'Ohio State Buckeyes',   date: '2025-09-27T00:00:00Z' },
+        { week: 6,  home: 'Ohio State Buckeyes', away: 'Minnesota Golden Gophers', date: '2025-10-04T00:00:00Z' },
+        { week: 7,  home: 'Illinois Fighting Illini', away: 'Ohio State Buckeyes', date: '2025-10-11T00:00:00Z' },
+        { week: 8,  home: 'Wisconsin Badgers',    away: 'Ohio State Buckeyes',   date: '2025-10-18T00:00:00Z' },
+        { week: 9,  home: 'Bye',                 away: 'Bye',                      date: '2025-09-20' },
+        { week: 10, home: 'Ohio State Buckeyes', away: 'Penn State Nittany Lions', date: '2025-11-01T00:00:00Z' },
+        { week: 11, home: 'Purdue Boilermakers', away: 'Ohio State Buckeyes',    date: '2025-11-08T00:00:00Z' },
+        { week: 12, home: 'Ohio State Buckeyes', away: 'UCLA Bruins',            date: '2025-11-15T00:00:00Z' },
+        { week: 13, home: 'Ohio State Buckeyes', away: 'Rutgers Scarlet Knights', date: '2025-11-22T00:00:00Z' },
+        { week: 14, home: 'Michigan Wolverines', away: 'Ohio State Buckeyes',   date: '2025-11-29T17:00:00Z' },
+      ]
+    }
+  end
+
   private
 
   def fetch_schedule_data(team)
@@ -38,22 +61,30 @@ class Modules::SportsService
       puts game.inspect
       game['teams']['away']['name'] == team || game['teams']['home']['name'] == team
     end
-    games.map do |game|
-      {
-        week: game['season']['week'],
-        home: game['teams']['home']['name'],
-        away: game['teams']['away']['name'],
-        date: game['date']
-      }
-    end
+    { 
+      team: team,
+      games:
+        games.map do |game|
+          {
+            week: game['season']['week'],
+            home: game['teams']['home']['name'],
+            away: game['teams']['away']['name'],
+            date: game['date']
+          }
+        end
+    }
   end
 
   def default_schedule_data
-    [
-      { week: 1, home: 'Cleveland Browns', away: 'Pittsburgh Steelers', date: '2025-09-07T18:00:00Z' },
-      { week: 2, home: 'Baltimore Ravens', away: 'Cleveland Browns', date: '2025-09-14T18:00:00Z' },
-      { week: 3, home: 'Cincinatti Bengals', away: 'Cleveland Browns', date: '2025-09-21T18:00:00Z' },
-      { week: 4, home: 'Pittsburgh Steelers', away: 'Cleveland Browns', date: '2025-09-28T18:00:00Z' }
-    ]
+    { 
+      team: "Cleveland Browns",
+      games:
+      [
+        { week: 1, home: 'Cleveland Browns', away: 'Pittsburgh Steelers', date: '2025-09-07T18:00:00Z' },
+        { week: 2, home: 'Baltimore Ravens', away: 'Cleveland Browns', date: '2025-09-14T18:00:00Z' },
+        { week: 3, home: 'Cincinatti Bengals', away: 'Cleveland Browns', date: '2025-09-21T18:00:00Z' },
+        { week: 4, home: 'Pittsburgh Steelers', away: 'Cleveland Browns', date: '2025-09-28T18:00:00Z' }
+      ]
+    }
   end
 end
