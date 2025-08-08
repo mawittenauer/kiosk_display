@@ -22,7 +22,7 @@ class Modules::SportsService
       team: "Ohio State Buckeyes",
       games:
       [
-        { week: 1,  home: 'Ohio State Buckeyes', away: 'Texas Longhorns',          date: '2025-08-30T17:00:00Z' },  # Estimated night game
+        { week: 1,  home: 'Ohio State Buckeyes', away: 'Texas Longhorns',          date: '2025-08-30T16:00:00Z' },  # Estimated night game
         { week: 2,  home: 'Ohio State Buckeyes', away: 'Grambling State Tigers',   date: '2025-09-06T16:00:00Z' },  # Estimated early afternoon
         { week: 3,  home: 'Ohio State Buckeyes', away: 'Ohio Bobcats',             date: '2025-09-13T16:00:00Z' },  # Estimated early afternoon
         { week: 4,  home: 'Bye',                  away: 'Bye',                      date: '2025-09-20' },
