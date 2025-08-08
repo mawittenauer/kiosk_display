@@ -22,20 +22,21 @@ class Modules::SportsService
       team: "Ohio State Buckeyes",
       games:
       [
-        { week: 1,  home: 'Ohio State Buckeyes', away: 'Texas Longhorns',        date: '2025-08-30T00:00:00Z' },
-        { week: 2,  home: 'Ohio State Buckeyes', away: 'Grambling State Tigers', date: '2025-09-06T00:00:00Z' },
-        { week: 3,  home: 'Ohio State Buckeyes', away: 'Ohio Bobcats',           date: '2025-09-13T00:00:00Z' },
-        { week: 4,  home: 'Bye',                 away: 'Bye',                      date: '2025-09-20' },
-        { week: 5,  home: 'Washington Huskies',   away: 'Ohio State Buckeyes',   date: '2025-09-27T00:00:00Z' },
-        { week: 6,  home: 'Ohio State Buckeyes', away: 'Minnesota Golden Gophers', date: '2025-10-04T00:00:00Z' },
-        { week: 7,  home: 'Illinois Fighting Illini', away: 'Ohio State Buckeyes', date: '2025-10-11T00:00:00Z' },
-        { week: 8,  home: 'Wisconsin Badgers',    away: 'Ohio State Buckeyes',   date: '2025-10-18T00:00:00Z' },
-        { week: 9,  home: 'Bye',                 away: 'Bye',                      date: '2025-09-20' },
-        { week: 10, home: 'Ohio State Buckeyes', away: 'Penn State Nittany Lions', date: '2025-11-01T00:00:00Z' },
-        { week: 11, home: 'Purdue Boilermakers', away: 'Ohio State Buckeyes',    date: '2025-11-08T00:00:00Z' },
-        { week: 12, home: 'Ohio State Buckeyes', away: 'UCLA Bruins',            date: '2025-11-15T00:00:00Z' },
-        { week: 13, home: 'Ohio State Buckeyes', away: 'Rutgers Scarlet Knights', date: '2025-11-22T00:00:00Z' },
-        { week: 14, home: 'Michigan Wolverines', away: 'Ohio State Buckeyes',   date: '2025-11-29T17:00:00Z' },
+        { week: 1,  home: 'Ohio State Buckeyes', away: 'Texas Longhorns',          date: '2025-08-30T00:00:00Z' },  # Estimated night game
+        { week: 2,  home: 'Ohio State Buckeyes', away: 'Grambling State Tigers',   date: '2025-09-06T16:00:00Z' },  # Estimated early afternoon
+        { week: 3,  home: 'Ohio State Buckeyes', away: 'Ohio Bobcats',             date: '2025-09-13T16:00:00Z' },  # Estimated early afternoon
+        { week: 4,  home: 'Bye',                  away: 'Bye',                      date: '2025-09-20' },
+        { week: 5,  home: 'Washington Huskies',   away: 'Ohio State Buckeyes',     date: '2025-09-27T23:00:00Z' },  # Estimated 7 PM PDT = 11 PM UTC
+        { week: 6,  home: 'Ohio State Buckeyes',  away: 'Minnesota Golden Gophers',date: '2025-10-04T16:00:00Z' },
+        { week: 7,  home: 'Illinois Fighting Illini', away: 'Ohio State Buckeyes', date: '2025-10-11T16:00:00Z' },
+        { week: 8,  home: 'Wisconsin Badgers',    away: 'Ohio State Buckeyes',     date: '2025-10-18T23:00:00Z' },
+        { week: 9,  home: 'Bye',                  away: 'Bye',                      date: '2025-10-25' },
+        { week: 10, home: 'Ohio State Buckeyes',  away: 'Penn State Nittany Lions',date: '2025-11-01T16:00:00Z' },
+        { week: 11, home: 'Purdue Boilermakers',  away: 'Ohio State Buckeyes',     date: '2025-11-08T16:00:00Z' },
+        { week: 12, home: 'Ohio State Buckeyes',  away: 'UCLA Bruins',             date: '2025-11-15T16:00:00Z' },
+        { week: 13, home: 'Ohio State Buckeyes',  away: 'Rutgers Scarlet Knights', date: '2025-11-22T16:00:00Z' },
+        { week: 14, home: 'Michigan Wolverines',  away: 'Ohio State Buckeyes',     date: '2025-11-29T17:00:00Z' },  # Official time announced
+        { week: 15, home: 'TBD',                  away: 'TBD',                      date: '2025-12-06T00:00:00Z' }   # Big Ten Championship (8 PM ET = 1 AM UTC Dec 7)
       ]
     }
   end
