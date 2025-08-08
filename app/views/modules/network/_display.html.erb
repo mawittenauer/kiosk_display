@@ -4,7 +4,7 @@
     <ul>
       <% data.each do |device| %>
         <li class="<%= device[:friendly_name] == "Unknown Device" ? 'unknown-device' : '' %>">
-          <strong><%= device[:friendly_name] %>...</strong> - <%= device[:ip_address] %>
+          <strong><%= device[:friendly_name] %></strong> - <%= device[:ip_address] %>
           <br>
           (last seen <%= time_ago_in_words(device[:last_seen]) %> ago)
         </li>
