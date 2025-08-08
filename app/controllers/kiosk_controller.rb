@@ -55,6 +55,12 @@ class KioskController < ApplicationController
         partial: 'modules/sports/display',
         data: Modules::SportsService.new(params[:year] || '2025').schedule(team_name)
       }
+
+      modules << {
+        name: 'buckeyes',
+        partial: 'modules/sports/display',
+        data: Modules::SportsService.new(params[:year] || '2025').buckeyes_schedule
+      }
     end
 
     if enabled_modules.include?('finance')
