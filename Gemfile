@@ -11,6 +11,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "httpparty"
 gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
+gem "notion-ruby-client"
 
 gem "bootsnap", require: false
 
