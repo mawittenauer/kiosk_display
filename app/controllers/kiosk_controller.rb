@@ -70,6 +70,14 @@ class KioskController < ApplicationController
         data: Modules::FinanceService.new.stock_prices(params[:symbols] || ['AAPL', 'GOOGL', 'MSFT'])
       }
     end
+
+    if enabled_modules.include?('notion')
+      modules << {
+        name: 'notion',
+        partial: 'modules/notion/display',
+        data: Modules::NotionService.new.pages
+      }
+    end
     
     modules
   end
