@@ -1,7 +1,19 @@
 <div class="notion-module">
   <h2>Notion Pages</h2>
   <div class="notion-items">
-    <%= data %>
+    <% data.each do |task| %>
+      <div class="notion-item">
+        <h3 class="notion-title"><%= task[:title] %></h3>
+        <p>
+          <strong>Status:</strong> 
+          <%= task[:status] %>
+          <strong>Impact:</strong>
+          <%= task[:impact] %>
+          <strong>Deadline:</strong>
+          <%= task[:deadline] %>
+        </p>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -13,8 +25,29 @@
     margin-bottom: 25px;
   }
   .notion-items {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    column-gap: 15px;
+  }
+
+  .notion-item {
+    break-inside: avoid;
+    background: #f9f9f9;
+    color: #666;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+  }
+
+  .notion-item h3 {
+    margin: 0 0 5px;
+    color: #333;
+  }
+
+  .notion-item p {
+    margin: 0;
+    font-size: 0.9em;
   }
 </style>
