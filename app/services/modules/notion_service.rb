@@ -5,7 +5,6 @@ class Modules::NotionService
   end
 
   def pages
-    puts @database_key.inspect
     Rails.cache.fetch("notion_pages", expires_in: 30.minutes) do
       fetch_pages
     end
