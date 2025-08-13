@@ -32,6 +32,6 @@ class Modules::NotionService
         impact: properties['Impact']['select'] ? properties['Impact']['select']['name'] : 'None',
         deadline: properties['Deadline']['date'] ? properties['Deadline']['date']['start'] : nil
       }
-    end.select { |p| p[:title] != 'Untitled' }
+    end.select { |p| p[:title] != 'Untitled' && p[:status] != 'Completed' }.sort_by { |p| p[:deadline] || '9999-12-31' }
   end
 end
