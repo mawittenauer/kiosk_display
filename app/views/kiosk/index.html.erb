@@ -58,24 +58,32 @@
       .then(data => {
         // Update weather module
         updateWeatherModule(data);
-      })
-      .catch(console.error);
+    })
+    .catch(console.error);
 
-      fetch('/modules/weather/forecast')
+    fetch('/modules/weather/forecast')
       .then(response => response.json())
       .then(data => {
         // Update weather forecast
         updateWeatherForecast(data);
-      })
-      .catch(console.error);
+    })
+    .catch(console.error);
 
-      fetch('/modules/network/devices')
+    fetch('/modules/network/devices')
       .then(response => response.json())
       .then(data => {
         // Update network devices module
         updateNetworkDevices(data);
-      })
-      .catch(console.error);
+    })
+    .catch(console.error);
+
+    fetch('/modules/notion')
+      .then(response => response.json())
+      .then(data => {
+        // Update Notion tasks module
+        updateNotionTasks(data);
+    })
+    .catch(console.error);
   }, <%= kiosk_config.refresh_interval %>);
   
   function updateWeatherModule(data) {
@@ -130,6 +138,28 @@
         (last seen ${timeAgoInWords(device.last_seen)})
       `;
       networkInfo.appendChild(li);
+    });
+  }
+
+  function updateNotionTasks(data) {
+    const notionModule = document.querySelector('[data-module="notion"] .notion-items');
+    if (!notionModule) return;
+
+    // Clear existing tasks
+    notionModule.innerHTML = '';
+
+    data.forEach(task => {
+      const taskDiv = document.createElement('div');
+      taskDiv.className = 'notion-item';
+      taskDiv.innerHTML = `
+        <h3 class="notion-title">${task.title}</h3>
+        <p>
+          <strong>Status:</strong> ${task.status} 
+          <strong>Impact:</strong> ${task.impact} 
+          <strong>Deadline:</strong> ${task.deadline}
+        </p>
+      `;
+      notionModule.appendChild(taskDiv);
     });
   }
 </script>
