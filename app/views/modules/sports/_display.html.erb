@@ -6,8 +6,21 @@
         <div class="game">
           <h3 class="week">Week <%= game[:week] %> <span>(<%= DateTime.parse(game[:date]).in_time_zone('Eastern Time (US & Canada)').strftime('%a, %b %d, %I:%M') %>)</span></h3>
           <div class="teams">
-            <span class="home-team"><%= game[:home] %></span> vs
-            <span class="away-team"><%= game[:away] %></span>
+            <% tracked = (data[:team] || params[:team] || '').to_s.strip.downcase %>
+            <% home = (game[:home] || '').strip %>
+            <% away = (game[:away] || '').strip %>
+            <% if tracked.present? %>
+              <% if home.downcase == tracked %>
+                <span class="opponent">Vs <%= away %></span>
+              <% elsif away.downcase == tracked %>
+                <span class="opponent">At <%= home %></span>
+              <% else %>
+                <span class="opponent"><%= home %> vs <%= away %></span>
+              <% end %>
+            <% else %>
+              <span class="home-team"><%= home %></span> vs
+              <span class="away-team"><%= away %></span>
+            <% end %>
           </div>
         </div>
       <% end %>
