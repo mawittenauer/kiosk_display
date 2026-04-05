@@ -13,6 +13,11 @@ class Modules::ArtemisControllerTest < ActionDispatch::IntegrationTest
     assert data["crew"].is_a?(Array)
     assert_equal 4, data["crew"].length
     assert data["milestones"].is_a?(Array)
-    assert data["launch_date"].present?
+    assert data["launch_time"].present?
+    assert data["status"].present?
+    assert data["phase_key"].present?
+    assert data.key?("progress_pct")
+    assert data.key?("elapsed_hours")
+    assert data["phases"].is_a?(Array)
   end
 end

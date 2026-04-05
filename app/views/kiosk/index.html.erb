@@ -148,51 +148,103 @@
     });
   }
 
-  // Artemis II countdown timer
-  function startArtemisCountdown() {
-    const el = document.getElementById('artemis-countdown');
-    if (!el) return;
-    const launchDate = new Date(el.dataset.launch).getTime();
+  // Artemis II Mission Elapsed Time ticker
+  function startArtemisMET() {
+    const mod = document.getElementById('artemis-module');
+    if (!mod) return;
+    const launchTime = new Date(mod.dataset.launch).getTime();
+
+    // Phase boundaries in hours from launch
+    const phases = [
+      { key: 'launch',   label: 'Launch & Ascent',       icon: '🚀', start: 0,   end: 2 },
+      { key: 'tli',      label: 'Trans-Lunar Injection',  icon: '🔥', start: 2,   end: 4 },
+      { key: 'outbound', label: 'Outbound Coast',         icon: '🌑', start: 4,   end: 96 },
+      { key: 'flyby',    label: 'Lunar Flyby',            icon: '🌕', start: 96,  end: 120 },
+      { key: 'return',   label: 'Return Coast',           icon: '🌍', start: 120, end: 228 },
+      { key: 'reentry',  label: 'Re-entry & Splashdown',  icon: '🪂', start: 228, end: 240 },
+      { key: 'complete', label: 'Mission Complete',        icon: '✅', start: 240, end: Infinity }
+    ];
 
     function tick() {
       const now = Date.now();
-      const diff = launchDate - now;
-      const digits = document.getElementById('artemis-countdown-digits');
-      if (!digits) return;
+      const elapsedMs = now - launchTime;
+      const elapsedH = elapsedMs / 3600000;
+      const totalH = 240;
+      const pct = Math.min((elapsedH / totalH) * 100, 100).toFixed(1);
 
-      if (diff <= 0) {
-        // Mission is in flight — show elapsed time
-        const elapsed = now - launchDate;
-        const d = Math.floor(elapsed / 86400000);
-        const h = Math.floor((elapsed % 86400000) / 3600000);
-        const m = Math.floor((elapsed % 3600000) / 60000);
-        const s = Math.floor((elapsed % 60000) / 1000);
-        document.getElementById('artemis-countdown-digits').textContent =
-          `T+ ${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
-        el.querySelector('.countdown-label').textContent = 'Mission Elapsed Time';
-      } else {
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        digits.textContent =
-          `T- ${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+      // MET display
+      const metEl = document.getElementById('artemis-met');
+      if (metEl) {
+        if (elapsedMs < 0) {
+          metEl.textContent = 'T- ' + formatDuration(-elapsedMs);
+        } else {
+          metEl.textContent = 'T+ ' + formatDuration(elapsedMs);
+        }
       }
+
+      // Progress bar
+      const fill = document.getElementById('artemis-progress');
+      const marker = document.getElementById('artemis-marker');
+      if (fill) fill.style.width = pct + '%';
+      if (marker) marker.style.left = pct + '%';
+
+      // Phase label
+      const phaseEl = document.getElementById('artemis-phase');
+      const iconEl = mod.querySelector('.art-phase-icon');
+      const phase = phases.find(p => elapsedH >= p.start && elapsedH < p.end) || phases[phases.length - 1];
+      if (phaseEl) phaseEl.textContent = phase.label;
+      if (iconEl) iconEl.textContent = phase.icon;
+
+      // Highlight active phase icon in bar
+      const plabels = mod.querySelectorAll('.art-plabel');
+      plabels.forEach((el, i) => {
+        el.classList.toggle('active', phases[i] && phases[i].key === phase.key);
+      });
     }
+
+    function formatDuration(ms) {
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor((ms % 86400000) / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      return d + 'd ' + String(h).padStart(2,'0') + ':' +
+             String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+
     tick();
     setInterval(tick, 1000);
   }
-  startArtemisCountdown();
+  startArtemisMET();
 
   function updateArtemisModule(data) {
-    const mod = document.querySelector('[data-module="artemis"]');
+    const mod = document.getElementById('artemis-module');
     if (!mod) return;
 
-    const statusBadge = mod.querySelector('.status-badge');
-    if (statusBadge) statusBadge.textContent = data.status;
+    // Update launch time data attribute (in case it changed)
+    if (data.launch_time) mod.dataset.launch = data.launch_time;
 
-    const countdownEl = document.getElementById('artemis-countdown');
-    if (countdownEl) countdownEl.dataset.launch = data.launch_date;
+    // Update phase label
+    const phaseLabel = document.getElementById('artemis-phase');
+    if (phaseLabel) phaseLabel.textContent = data.status;
+    const phaseIcon = mod.querySelector('.art-phase-icon');
+    if (phaseIcon) phaseIcon.textContent = data.status_icon;
+
+    // Update next milestone
+    const nextEl = mod.querySelector('.art-next');
+    if (nextEl && data.next_milestone) {
+      nextEl.innerHTML = 'Next: <strong>' + data.next_milestone.name + '</strong>';
+    }
+
+    // Update milestones
+    const msEls = mod.querySelectorAll('.art-ms');
+    if (data.milestones) {
+      data.milestones.forEach((ms, i) => {
+        if (msEls[i]) {
+          msEls[i].className = 'art-ms ' + (ms.completed ? 'done' : 'pending');
+          msEls[i].querySelector('.art-ms-dot').textContent = ms.completed ? '●' : '○';
+        }
+      });
+    }
 
     const updated = mod.querySelector('.artemis-updated');
     if (updated) updated.textContent = 'Updated: ' + data.last_updated;
