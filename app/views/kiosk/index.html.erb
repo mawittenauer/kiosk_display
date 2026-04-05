@@ -84,6 +84,13 @@
         updateNotionTasks(data);
     })
     .catch(console.error);
+
+    fetch('/modules/artemis')
+      .then(response => response.json())
+      .then(data => {
+        updateArtemisModule(data);
+    })
+    .catch(console.error);
   }, <%= kiosk_config.refresh_interval %>);
   
   function updateWeatherModule(data) {
@@ -139,6 +146,56 @@
       `;
       networkInfo.appendChild(li);
     });
+  }
+
+  // Artemis II countdown timer
+  function startArtemisCountdown() {
+    const el = document.getElementById('artemis-countdown');
+    if (!el) return;
+    const launchDate = new Date(el.dataset.launch).getTime();
+
+    function tick() {
+      const now = Date.now();
+      const diff = launchDate - now;
+      const digits = document.getElementById('artemis-countdown-digits');
+      if (!digits) return;
+
+      if (diff <= 0) {
+        // Mission is in flight — show elapsed time
+        const elapsed = now - launchDate;
+        const d = Math.floor(elapsed / 86400000);
+        const h = Math.floor((elapsed % 86400000) / 3600000);
+        const m = Math.floor((elapsed % 3600000) / 60000);
+        const s = Math.floor((elapsed % 60000) / 1000);
+        document.getElementById('artemis-countdown-digits').textContent =
+          `T+ ${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+        el.querySelector('.countdown-label').textContent = 'Mission Elapsed Time';
+      } else {
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        digits.textContent =
+          `T- ${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+  startArtemisCountdown();
+
+  function updateArtemisModule(data) {
+    const mod = document.querySelector('[data-module="artemis"]');
+    if (!mod) return;
+
+    const statusBadge = mod.querySelector('.status-badge');
+    if (statusBadge) statusBadge.textContent = data.status;
+
+    const countdownEl = document.getElementById('artemis-countdown');
+    if (countdownEl) countdownEl.dataset.launch = data.launch_date;
+
+    const updated = mod.querySelector('.artemis-updated');
+    if (updated) updated.textContent = 'Updated: ' + data.last_updated;
   }
 
   function updateNotionTasks(data) {

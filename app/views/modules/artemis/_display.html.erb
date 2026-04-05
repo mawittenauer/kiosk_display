@@ -1,0 +1,200 @@
+<div class="artemis-module">
+  <h2>🚀 Artemis II — Lunar Flyby Mission</h2>
+
+  <div class="artemis-status-bar">
+    <span class="status-badge"><%= data[:status] %></span>
+    <span class="vehicle-badge"><%= data[:vehicle] %></span>
+  </div>
+
+  <div class="artemis-countdown" id="artemis-countdown"
+       data-launch="<%= data[:launch_date] %>">
+    <div class="countdown-label">Countdown to Launch</div>
+    <div class="countdown-digits" id="artemis-countdown-digits">--d --h --m --s</div>
+  </div>
+
+  <p class="artemis-description"><%= data[:description] %></p>
+
+  <div class="artemis-section">
+    <h3>Crew</h3>
+    <div class="crew-grid">
+      <% data[:crew].each do |member| %>
+        <div class="crew-card">
+          <div class="crew-name"><%= member[:name] %></div>
+          <div class="crew-role"><%= member[:role] %></div>
+          <div class="crew-agency"><%= member[:agency] %> · <%= member[:nationality] %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="artemis-section">
+    <h3>Mission Timeline</h3>
+    <div class="milestones">
+      <% data[:milestones].each do |ms| %>
+        <div class="milestone <%= ms[:completed] ? 'completed' : 'pending' %>">
+          <span class="ms-indicator"><%= ms[:completed] ? '✅' : '⬜' %></span>
+          <span class="ms-name"><%= ms[:name] %></span>
+          <span class="ms-date"><%= Date.parse(ms[:date].to_s).strftime('%b %d, %Y') rescue ms[:date] %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="artemis-meta">
+    <span>📍 <%= data[:pad] %></span>
+    <span class="artemis-updated">Updated: <%= data[:last_updated] %></span>
+  </div>
+</div>
+
+<style>
+  .artemis-module h2 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 12px;
+  }
+
+  .artemis-status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .status-badge {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95em;
+  }
+
+  .vehicle-badge {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95em;
+  }
+
+  .artemis-countdown {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .countdown-label {
+    font-size: 1em;
+    opacity: 0.7;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .countdown-digits {
+    font-size: 2.6em;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+    color: #f59e0b;
+  }
+
+  .artemis-description {
+    text-align: center;
+    opacity: 0.85;
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin: 0 10px 20px;
+  }
+
+  .artemis-section h3 {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .crew-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .crew-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .crew-name {
+    font-weight: 700;
+    font-size: 1.05em;
+    margin-bottom: 2px;
+  }
+
+  .crew-role {
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+
+  .crew-agency {
+    font-size: 0.8em;
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+
+  .milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .milestone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+  }
+
+  .milestone.completed {
+    opacity: 0.6;
+  }
+
+  .milestone.pending {
+    background: rgba(245, 158, 11, 0.08);
+  }
+
+  .ms-indicator {
+    flex-shrink: 0;
+  }
+
+  .ms-name {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  .ms-date {
+    font-size: 0.85em;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .artemis-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    opacity: 0.5;
+    margin-top: 10px;
+  }
+
+  .artemis-updated {
+    text-align: right;
+  }
+</style>
