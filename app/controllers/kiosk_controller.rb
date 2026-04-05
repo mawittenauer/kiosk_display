@@ -78,6 +78,14 @@ class KioskController < ApplicationController
         data: Modules::NotionService.new.pages
       }
     end
+
+    if enabled_modules.include?('artemis')
+      modules << {
+        name: 'artemis',
+        partial: 'modules/artemis/display',
+        data: Modules::ArtemisService.new.mission_data
+      }
+    end
     
     modules
   end
