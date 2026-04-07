@@ -86,6 +86,14 @@ class KioskController < ApplicationController
         data: Modules::ArtemisService.new.mission_data
       }
     end
+
+    if enabled_modules.include?('iframe')
+      modules << {
+        name: 'iframe',
+        partial: 'modules/iframe/display',
+        data: Modules::IframeService.new(url: params[:iframe_url]).iframe_data
+      }
+    end
     
     modules
   end

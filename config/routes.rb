@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     end
     resources :notion, only: [:index]
     resources :artemis, only: [:index]
+    resources :iframe, only: [:index]
   end
   resources :kiosk_configs, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
